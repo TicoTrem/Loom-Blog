@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using backend.Data;
+using backend.models;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -26,7 +27,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -37,6 +38,14 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast");
+
+app.MapGet("/blogpost", async (BlogProjectDbContext db) => await db.BlogPosts.ToListAsync());
+app.MapPost("/blogpost", async (BlogProjectDbContext db, BlogPost bp) =>
+{
+    await db.BlogPosts.AddAsync(bp);
+    await db.SaveChangesAsync();
+    return Results.Created($"/blogpost/{bp.Id}", bp);
+});
 
 app.Run();
 

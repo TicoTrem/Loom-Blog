@@ -10,9 +10,9 @@ namespace backend.models
     {
         public int Id { get; set; }
         public Author Author { get; set; } = null!;
-        public int Content { get; set; }
+        public string Content { get; set; } = "";
 
-        public DateTimeOffset CreatedDate { get; set; }
+        public DateTimeOffset? CreatedDate { get; set; }
         public DateTimeOffset? LastUpdatedDate { get; set; }
         
 

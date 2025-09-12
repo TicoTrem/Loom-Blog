@@ -1,6 +1,18 @@
 @backend_HostAddress = http://localhost:5192
 
-GET {{backend_HostAddress}}/weatherforecast/
+### GET all blog posts
+GET {{backend_HostAddress}}/blogpost/
 Accept: application/json
 
 ###
+
+### POST a new blog post
+POST {{backend_HostAddress}}/blogpost/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Id": 1,
+  "Author": {"Id": 1, "Name": "Alice"},
+  "Content": "Hello, this is my very first blog post!"
+}
