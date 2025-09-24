@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using backend.Data;
 using backend.models;
@@ -28,6 +29,8 @@ namespace backend.services
         }
         public async Task<bool> CreatePost(BlogPost post)
         {
+            post.CreatedDateUtc = DateTime.UtcNow;
+            post.LastUpdatedDateUtc = post.CreatedDateUtc;
             await _context.BlogPosts.AddAsync(post);
             return await _context.SaveChangesAsync() > 0;
         }

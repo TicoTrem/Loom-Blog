@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using backend.Data;
 using backend.services;
+using backend.models;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -23,11 +24,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/blogpost", (IBlogService bs) =>
-{
-    return bs.GetAllPosts();
-})
-.WithName("GetAllBlogPosts");
+app.MapGet("/blogpost", (IBlogService bs) => bs.GetAllPosts()).WithName("GetAllBlogPosts");
+
+app.MapPost("/blogpost", (IBlogService bs, CreateBlogPostRequest request) =>
+    bs.CreatePost(new BlogPost { Content = request.Content, AuthorId = request.authorId })).WithName("CreateBlogPost");
 
 app.Run();
+
+record CreateBlogPostRequest(string Content, int authorId);
+
 

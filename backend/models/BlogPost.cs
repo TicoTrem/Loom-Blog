@@ -9,13 +9,13 @@ namespace backend.models
     public class BlogPost
     {
         public int Id { get; set; }
+        public int AuthorId { get; set; }
         public Author Author { get; set; } = null!;
         public string Content { get; set; } = "";
 
-        public DateTimeOffset? CreatedDate { get; set; }
-        public DateTimeOffset? LastUpdatedDate { get; set; }
+        public DateTime? CreatedDateUtc { get; set; }
+        public DateTime? LastUpdatedDateUtc { get; set; }
         
-
     }
 
 

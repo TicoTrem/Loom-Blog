@@ -12,7 +12,12 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "Id": 1,
-  "Author": {"Id": 1, "Name": "Alice"},
-  "Content": "Hello, this is my very first blog post!"
+  "authorId": 1,
+  "Content": "This is my second blog post, I hope it goes well!"
 }
+
+# {
+#   "Id": 1,
+#   "Author": {"Id": 3, "Name": "Alice23"},
+#   "Content": "Hello, this is my very first blog post23!"
+# }
