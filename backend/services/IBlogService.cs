@@ -9,9 +9,9 @@ namespace backend.services
     public interface IBlogService
     {
         IEnumerable<BlogPost> GetAllPosts();
-        BlogPost GetBlogPost(int id);
-        bool CreatePost(BlogPost blogPost);
-        bool UpdatePost(BlogPost blogPost);
-        bool DeletePost(int id);
+        BlogPost? GetBlogPost(int id);
+        Task<bool> CreatePost(BlogPost blogPost);
+        Task<bool> UpdatePost(BlogPost blogPost);
+        Task<bool> DeletePost(int id);
     }
 }
