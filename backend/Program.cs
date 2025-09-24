@@ -1,10 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using backend.Data;
-using backend.models;
+using backend.services;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// When they ask for a blog project db context, use the MySQL connection method
 builder.Services.AddDbContext<BlogProjectDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+// When they ask for an IBlogService implementation, give them EfCoreBlogService
+builder.Services.AddScoped<IBlogService, EfCoreBlogService>();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -25,27 +28,12 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
 
-app.MapGet("/blogpost", async (BlogProjectDbContext db) => await db.BlogPosts.ToListAsync());
-app.MapPost("/blogpost", async (BlogProjectDbContext db, BlogPost bp) =>
+app.MapGet("/blogpost", (IBlogService bs) =>
 {
-    await db.BlogPosts.AddAsync(bp);
-    await db.SaveChangesAsync();
-    return Results.Created($"/blogpost/{bp.Id}", bp);
-});
+    return bs.GetAllPosts();
+})
+.WithName("GetAllBlogPosts");
 
 app.Run();
 
