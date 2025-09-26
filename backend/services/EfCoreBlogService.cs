@@ -21,22 +21,24 @@ namespace backend.services
             _context = dbContext;
         }
 
-        public IEnumerable<BlogPost> GetAllPosts()
+        public async Task<IEnumerable<BlogPost>> GetAllPosts()
         {
-            return _context.BlogPosts.ToList();
+            return await _context.BlogPosts.ToListAsync();
         }
-        public BlogPost? GetBlogPost(int id)
+        public async Task<BlogPost?> GetBlogPost(int id)
         {
-            return _context.BlogPosts.Find(id);
+            return await _context.BlogPosts.FindAsync(id);
         }
-        public async Task<bool> CreatePost(BlogPost post)
+        public async Task<BlogPost?> CreatePost(BlogPostCreateDto postDto)
         {
-            post.CreatedDateUtc = DateTime.UtcNow;
-            post.LastUpdatedDateUtc = post.CreatedDateUtc;
-            await _context.BlogPosts.AddAsync(post);
-            return await _context.SaveChangesAsync() > 0;
+            Console.WriteLine(postDto);
+            DateTime utcNow = DateTime.UtcNow;
+            BlogPost newPost = new BlogPost { CreatedDateUtc = utcNow, LastUpdatedDateUtc = utcNow };
+            patchInChanges(newPost, postDto);
+            await _context.BlogPosts.AddAsync(newPost);
+            return await _context.SaveChangesAsync() > 0 ? newPost : null;
         }
-        public async Task<bool> UpdatePost(int id, BlogPost post)
+        public async Task<bool> UpdatePost(int id, BlogPostUpdateDto post)
         {
             BlogPost? existingPost = await _context.BlogPosts.FindAsync(id);
             if (existingPost == null) return false;
@@ -55,13 +57,14 @@ namespace backend.services
             return await _context.SaveChangesAsync() > 0;
         }
 
-        private void patchInChanges(BlogPost ogPost, BlogPost newPost)
+        private void patchInChanges(BlogPost ogPost, object newPost)
         {
-            foreach (var p in ogPost.GetType().GetProperties())
+            foreach (var p in newPost.GetType().GetProperties())
             {
                 object? newValue = p.GetValue(newPost);
-                if (newValue == null) continue;
-                p.SetValue(ogPost, newValue);
+                PropertyInfo? bpProp = ogPost.GetType().GetProperty(p.Name);
+                if (newValue == null || bpProp == null) continue;
+                bpProp.SetValue(ogPost, newValue);
             }
         }
     }

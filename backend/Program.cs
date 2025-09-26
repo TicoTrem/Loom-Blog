@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using backend.Data;
 using backend.services;
 using backend.models;
+using MySqlX.XDevAPI.Common;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -26,15 +27,22 @@ app.UseHttpsRedirection();
 
 app.MapGet("/blogpost", (IBlogService bs) => bs.GetAllPosts()).WithName("GetAllBlogPosts");
 
-// TODO: Make sure the person sending this request is authenticated as the author of the post object
-app.MapPost("/blogpost", async (IBlogService bs, BlogPost post) =>
+app.MapGet("/blogpost/{id}", async (IBlogService bs, int id) =>
 {
-    bool bSuccess = await bs.CreatePost(post);
-    return bSuccess ? Results.NoContent() : Results.BadRequest();
+    BlogPost? foundBlogPost = await bs.GetBlogPost(id);
+    return foundBlogPost == null ? Results.NotFound() : Results.Ok(foundBlogPost);
+}).WithName("GetBlogPost");
+
+// TODO: Make sure the person sending this request is authenticated as the author of the post object
+app.MapPost("/blogpost", async (IBlogService bs, BlogPostCreateDto post) =>
+{
+    BlogPost? createdPost = await bs.CreatePost(post);
+    // return the route to get the object as well as the object if success, BadRequest if not
+    return createdPost == null ? Results.BadRequest() : Results.CreatedAtRoute(routeName: "GetBlogPost", routeValues: new { Id = createdPost.Id }, value: createdPost);
 }).WithName("SaveBlogPost");
 
 
-app.MapPatch("/blogpost/{id}", async (IBlogService bs, int id, BlogPost post) =>
+app.MapPatch("/blogpost/{id}", async (IBlogService bs, int id, BlogPostUpdateDto post) =>
 {
     bool bSuccess = await bs.UpdatePost(id, post);
     return bSuccess ? Results.NoContent() : Results.NotFound();
@@ -48,6 +56,9 @@ app.MapDelete("/blogpost/{id}", async (IBlogService bs, int id) =>
 
 app.Run();
 
-record BlogPostRequest(string Content, int authorId);
+// also defines what can be updated
+public record BlogPostUpdateDto(string? Content);
+// defines which parts of the new blog object can come from the request
+public record BlogPostCreateDto(string Content, int AuthorId);
 
 

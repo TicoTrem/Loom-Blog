@@ -8,10 +8,10 @@ namespace backend.services
 {
     public interface IBlogService
     {
-        IEnumerable<BlogPost> GetAllPosts();
-        BlogPost? GetBlogPost(int id);
-        Task<bool> CreatePost(BlogPost blogPost);
-        Task<bool> UpdatePost(int id, BlogPost blogPost);
+        Task<IEnumerable<BlogPost>> GetAllPosts();
+        Task<BlogPost?> GetBlogPost(int id);
+        Task<BlogPost?> CreatePost(BlogPostCreateDto blogPost);
+        Task<bool> UpdatePost(int id, BlogPostUpdateDto blogPost);
         Task<bool> DeletePost(int id);
     }
 }

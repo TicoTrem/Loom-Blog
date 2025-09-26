@@ -6,15 +6,18 @@ Accept: application/json
 
 ###
 
+### GET a blog post
+
+GET {{backend_HostAddress}}/blogpost/1
+Accept: application/json
+
 ### POST a new blog post
 POST {{backend_HostAddress}}/blogpost/
 Content-Type: application/json
 Accept: application/json
 
 {
-  "Id": 1,
-  "authorId": 1,
-  "Content": "This is my second blog post, I hope it goes well!"
+  "authorId": 1
 }
 
 # {
@@ -26,14 +29,13 @@ Accept: application/json
 ###
 
 ### UPDATE a blog post
-PATCH {{backend_HostAddress}}/blogpost/1
+PATCH {{backend_HostAddress}}/blogpost/11
 Content-Type: application/json
 Accept: application/json
 
 {
-  "Id": 1,
-  "authorId": 1,
-  "Content": "New content poggers!"
+  "Id": 12,
+  "authorId": 2
 }
 
 ###
