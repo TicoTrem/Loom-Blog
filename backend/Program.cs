@@ -27,11 +27,24 @@ app.UseHttpsRedirection();
 app.MapGet("/blogpost", (IBlogService bs) => bs.GetAllPosts()).WithName("GetAllBlogPosts");
 
 // TODO: Make sure the person sending this request is authenticated as the author of the post object
-app.MapPost("/blogpost", (IBlogService bs, BlogPost post) =>
-    bs.CreatePost(post)).WithName("SaveBlogPost");
+app.MapPost("/blogpost", async (IBlogService bs, BlogPost post) =>
+{
+    bool bSuccess = await bs.CreatePost(post);
+    return bSuccess ? Results.NoContent() : Results.BadRequest();
+}).WithName("SaveBlogPost");
 
-app.MapPatch("/blogpost/{id}", (IBlogService bs, int id, BlogPost post) =>
-    bs.UpdatePost(id, post)).WithName("UpdateBlogPost");
+
+app.MapPatch("/blogpost/{id}", async (IBlogService bs, int id, BlogPost post) =>
+{
+    bool bSuccess = await bs.UpdatePost(id, post);
+    return bSuccess ? Results.NoContent() : Results.NotFound();
+}).WithName("UpdateBlogPost");
+
+app.MapDelete("/blogpost/{id}", async (IBlogService bs, int id) =>
+{
+    bool bSuccess = await bs.DeletePost(id);
+    return bSuccess ? Results.Accepted() : Results.NotFound();
+}).WithName("DeleteBlogPost");
 
 app.Run();
 

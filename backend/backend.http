@@ -12,6 +12,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
+  "Id": 1,
   "authorId": 1,
   "Content": "This is my second blog post, I hope it goes well!"
 }
@@ -34,3 +35,11 @@ Accept: application/json
   "authorId": 1,
   "Content": "New content poggers!"
 }
+
+###
+
+DELETE {{backend_HostAddress}}/blogpost/1
+Content-Type: application/json
+Accept: application/json
+
+###
