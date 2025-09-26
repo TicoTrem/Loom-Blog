@@ -26,11 +26,15 @@ app.UseHttpsRedirection();
 
 app.MapGet("/blogpost", (IBlogService bs) => bs.GetAllPosts()).WithName("GetAllBlogPosts");
 
-app.MapPost("/blogpost", (IBlogService bs, CreateBlogPostRequest request) =>
-    bs.CreatePost(new BlogPost { Content = request.Content, AuthorId = request.authorId })).WithName("CreateBlogPost");
+// TODO: Make sure the person sending this request is authenticated as the author of the post object
+app.MapPost("/blogpost", (IBlogService bs, BlogPost post) =>
+    bs.CreatePost(post)).WithName("SaveBlogPost");
+
+app.MapPatch("/blogpost/{id}", (IBlogService bs, int id, BlogPost post) =>
+    bs.UpdatePost(id, post)).WithName("UpdateBlogPost");
 
 app.Run();
 
-record CreateBlogPostRequest(string Content, int authorId);
+record BlogPostRequest(string Content, int authorId);
 
 

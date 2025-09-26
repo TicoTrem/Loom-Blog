@@ -11,7 +11,7 @@ namespace backend.services
         IEnumerable<BlogPost> GetAllPosts();
         BlogPost? GetBlogPost(int id);
         Task<bool> CreatePost(BlogPost blogPost);
-        Task<bool> UpdatePost(BlogPost blogPost);
+        Task<bool> UpdatePost(int id, BlogPost blogPost);
         Task<bool> DeletePost(int id);
     }
 }

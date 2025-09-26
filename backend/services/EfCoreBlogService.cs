@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using backend.Data;
 using backend.models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace backend.services
 {
@@ -34,10 +36,13 @@ namespace backend.services
             await _context.BlogPosts.AddAsync(post);
             return await _context.SaveChangesAsync() > 0;
         }
-        public async Task<bool> UpdatePost(BlogPost post)
+        public async Task<bool> UpdatePost(int id, BlogPost post)
         {
-            _context.BlogPosts.Update(post);
-            return await _context.SaveChangesAsync() > 0;
+            BlogPost? existingPost = await _context.BlogPosts.FindAsync(id);
+            if (existingPost == null) return false;
+            patchInChanges(existingPost, post);
+            await _context.SaveChangesAsync();
+            return true;
         }
         public async Task<bool> DeletePost(int id)
         {
@@ -48,6 +53,16 @@ namespace backend.services
             }
             _context.BlogPosts.Remove(bp);
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        private void patchInChanges(BlogPost ogPost, BlogPost newPost)
+        {
+            foreach (var p in ogPost.GetType().GetProperties())
+            {
+                object? newValue = p.GetValue(newPost);
+                if (newValue == null) continue;
+                p.SetValue(ogPost, newValue);
+            }
         }
     }
 }

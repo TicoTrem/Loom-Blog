@@ -21,3 +21,16 @@ Accept: application/json
 #   "Author": {"Id": 3, "Name": "Alice23"},
 #   "Content": "Hello, this is my very first blog post23!"
 # }
+
+###
+
+### UPDATE a blog post
+PATCH {{backend_HostAddress}}/blogpost/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Id": 1,
+  "authorId": 1,
+  "Content": "New content poggers!"
+}
