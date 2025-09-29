@@ -4,7 +4,10 @@ import { Observable } from 'rxjs';
 
 export interface BlogPost {
   content: string;
-  authorId: number;
+  author: Author;
+}
+export interface Author {
+  name: string;
 }
 
 @Injectable({
