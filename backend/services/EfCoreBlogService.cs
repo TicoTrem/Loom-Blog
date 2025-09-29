@@ -23,15 +23,14 @@ namespace backend.services
 
         public async Task<IEnumerable<BlogPost>> GetAllPosts()
         {
-            return await _context.BlogPosts.ToListAsync();
+            return await _context.BlogPosts.Include(bp => bp.Author).ToListAsync();
         }
         public async Task<BlogPost?> GetBlogPost(int id)
         {
-            return await _context.BlogPosts.FindAsync(id);
+            return await _context.BlogPosts.Include(bp => bp.Author).FirstOrDefaultAsync(bp => bp.Id == id);
         }
         public async Task<BlogPost?> CreatePost(BlogPostCreateDto postDto)
         {
-            Console.WriteLine(postDto);
             DateTime utcNow = DateTime.UtcNow;
             BlogPost newPost = new BlogPost { CreatedDateUtc = utcNow, LastUpdatedDateUtc = utcNow };
             patchInChanges(newPost, postDto);
