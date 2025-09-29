@@ -15,7 +15,19 @@ builder.Services.AddScoped<IBlogService, EfCoreBlogService>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
+// dev only
+app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -25,7 +37,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/blogpost", (IBlogService bs) => bs.GetAllPosts()).WithName("GetAllBlogPosts");
+app.MapGet("/blogpost", async (IBlogService bs) => await bs.GetAllPosts()).WithName("GetAllBlogPosts");
 
 app.MapGet("/blogpost/{id}", async (IBlogService bs, int id) =>
 {
