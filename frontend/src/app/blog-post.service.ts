@@ -3,10 +3,13 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 export interface BlogPost {
+  id: number
   content: string;
   author: Author;
+  createdDateUtc: string
 }
 export interface Author {
+  id: number
   name: string;
 }
 
