@@ -3,11 +3,10 @@ import {BlogPost, BlogPostService } from '../blog-post.service'
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-blog-post',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './blog-post.component.html',
-  styleUrl: './blog-post.component.css'
+    selector: 'app-blog-post',
+    imports: [CommonModule],
+    templateUrl: './blog-post.component.html',
+    styleUrl: './blog-post.component.css'
 })
 export class BlogPostComponent {
   // right now this is more of a BlogListComponent, but this is a good start
