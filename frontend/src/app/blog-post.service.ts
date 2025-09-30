@@ -19,6 +19,10 @@ export class BlogPostService {
   private apiUrl = 'http://localhost:5192/blogpost'
 
 
+  get(id: number): Observable<BlogPost> {
+    return this.http.get<BlogPost>(this.apiUrl + `/${id}`)
+  }
+
   getAll(): Observable<BlogPost[]> {
     return this.http.get<BlogPost[]>(this.apiUrl)
   }

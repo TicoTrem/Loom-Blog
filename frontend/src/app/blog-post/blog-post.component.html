@@ -1,6 +1,6 @@
-@for (post of posts; track post) {
+@if (post) {
   <div>
-    <h2>{{post.author.name}}</h2>
+    <h2>{{ post.author.name}}</h2>
     <p>{{ post.content }}</p>
   </div>
 }
