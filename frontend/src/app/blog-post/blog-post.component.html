@@ -1,5 +1,7 @@
-<div *ngFor="let post of posts">
-  <h2>{{post.author.name}}</h2>
-  <p>{{ post.content }}</p>
-</div>
+@for (post of posts; track post) {
+  <div>
+    <h2>{{post.author.name}}</h2>
+    <p>{{ post.content }}</p>
+  </div>
+}
 <p>hello</p>

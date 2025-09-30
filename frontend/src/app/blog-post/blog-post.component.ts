@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import {BlogPost, BlogPostService } from '../blog-post.service'
-import { CommonModule } from '@angular/common';
+
 
 @Component({
     selector: 'app-blog-post',
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './blog-post.component.html',
     styleUrl: './blog-post.component.css'
 })
