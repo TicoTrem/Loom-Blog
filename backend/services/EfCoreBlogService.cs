@@ -12,11 +12,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace backend.services
 {
-    public class EfCoreBlogService : IBlogService
+    public class EfCoreBlogPostService : IBlogPostService
     {
         private readonly BlogProjectDbContext _context;
 
-        public EfCoreBlogService(BlogProjectDbContext dbContext)
+        public EfCoreBlogPostService(BlogProjectDbContext dbContext)
         {
             _context = dbContext;
         }
@@ -33,7 +33,7 @@ namespace backend.services
         {
             DateTime utcNow = DateTime.UtcNow;
             BlogPost newPost = new BlogPost { CreatedDateUtc = utcNow, LastUpdatedDateUtc = utcNow };
-            patchInChanges(newPost, postDto);
+            newPost.Patch(postDto);
             await _context.BlogPosts.AddAsync(newPost);
             return await _context.SaveChangesAsync() > 0 ? newPost : null;
         }
@@ -41,7 +41,7 @@ namespace backend.services
         {
             BlogPost? existingPost = await _context.BlogPosts.FindAsync(id);
             if (existingPost == null) return false;
-            patchInChanges(existingPost, post);
+            existingPost.Patch(post);
             await _context.SaveChangesAsync();
             return true;
         }
@@ -56,15 +56,6 @@ namespace backend.services
             return await _context.SaveChangesAsync() > 0;
         }
 
-        private void patchInChanges(BlogPost ogPost, object newPost)
-        {
-            foreach (var p in newPost.GetType().GetProperties())
-            {
-                object? newValue = p.GetValue(newPost);
-                PropertyInfo? bpProp = ogPost.GetType().GetProperty(p.Name);
-                if (newValue == null || bpProp == null) continue;
-                bpProp.SetValue(ogPost, newValue);
-            }
-        }
+
     }
 }

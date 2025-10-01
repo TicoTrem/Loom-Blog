@@ -6,7 +6,7 @@ using backend.models;
 
 namespace backend.services
 {
-    public interface IBlogService
+    public interface IBlogPostService
     {
         Task<IEnumerable<BlogPost>> GetAllPosts();
         Task<BlogPost?> GetBlogPost(int id);

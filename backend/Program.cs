@@ -9,7 +9,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // When they ask for a blog project db context, use the MySQL connection method
 builder.Services.AddDbContext<BlogProjectDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 // When they ask for an IBlogService implementation, give them EfCoreBlogService
-builder.Services.AddScoped<IBlogService, EfCoreBlogService>();
+builder.Services.AddScoped<IBlogPostService, EfCoreBlogPostService>();
+builder.Services.AddScoped<IAuthorService, EfCoreAuthorService>();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -37,16 +38,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/blogpost", async (IBlogService bs) => await bs.GetAllPosts()).WithName("GetAllBlogPosts");
+app.MapGet("/blogpost", async (IBlogPostService bs) => await bs.GetAllPosts()).WithName("GetAllBlogPosts");
 
-app.MapGet("/blogpost/{id}", async (IBlogService bs, int id) =>
+app.MapGet("/blogpost/{id}", async (IBlogPostService bs, int id) =>
 {
     BlogPost? foundBlogPost = await bs.GetBlogPost(id);
     return foundBlogPost == null ? Results.NotFound() : Results.Ok(foundBlogPost);
 }).WithName("GetBlogPost");
 
 // TODO: Make sure the person sending this request is authenticated as the author of the post object
-app.MapPost("/blogpost", async (IBlogService bs, BlogPostCreateDto post) =>
+app.MapPost("/blogpost", async (IBlogPostService bs, BlogPostCreateDto post) =>
 {
     BlogPost? createdPost = await bs.CreatePost(post);
     // return the route to get the object as well as the object if success, BadRequest if not
@@ -54,13 +55,13 @@ app.MapPost("/blogpost", async (IBlogService bs, BlogPostCreateDto post) =>
 }).WithName("SaveBlogPost");
 
 
-app.MapPatch("/blogpost/{id}", async (IBlogService bs, int id, BlogPostUpdateDto post) =>
+app.MapPatch("/blogpost/{id}", async (IBlogPostService bs, int id, BlogPostUpdateDto post) =>
 {
     bool bSuccess = await bs.UpdatePost(id, post);
     return bSuccess ? Results.NoContent() : Results.NotFound();
 }).WithName("UpdateBlogPost");
 
-app.MapDelete("/blogpost/{id}", async (IBlogService bs, int id) =>
+app.MapDelete("/blogpost/{id}", async (IBlogPostService bs, int id) =>
 {
     bool bSuccess = await bs.DeletePost(id);
     return bSuccess ? Results.Accepted() : Results.NotFound();
@@ -72,5 +73,7 @@ app.Run();
 public record BlogPostUpdateDto(string? Content);
 // defines which parts of the new blog object can come from the request
 public record BlogPostCreateDto(string Content, int AuthorId);
+
+public record AuthorCreateDto(string Name);
 
 
