@@ -27,9 +27,12 @@ namespace backend.services
         {
             return await _context.Authors.FindAsync(id);
         }
-        public Task<bool?> CreateAuthor(AuthorCreateDto author)
+        public async Task<bool?> CreateAuthor(AuthorCreateDto author)
         {
-            throw new NotImplementedException();
+            Author newAuthor = new Author();
+            newAuthor.Patch(author);
+            await _context.Authors.AddAsync(newAuthor);
+            return await _context.SaveChangesAsync() > 0;
         }
 
         public Task<bool?> DeleteAuthor(int id)
