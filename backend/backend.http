@@ -16,15 +16,14 @@ POST {{backend_HostAddress}}/blogpost/
 Content-Type: application/json
 Accept: application/json
 
-{
-  "authorId": 1
-}
-
 # {
-#   "Id": 1,
-#   "Author": {"Id": 3, "Name": "Alice23"},
-#   "Content": "Hello, this is my very first blog post23!"
+#   "authorId": 1
 # }
+
+{
+  "authorId": 2,
+  "Content": "Hello, this is my very first blog post23!"
+}
 
 ###
 
@@ -35,12 +34,13 @@ Accept: application/json
 
 {
   "Id": 12,
-  "authorId": 2
+  "authorId": 3,
+  "Content": "wowow more test content"
 }
 
 ### DELETE a blog post
 
-DELETE {{backend_HostAddress}}/blogpost/1
+DELETE {{backend_HostAddress}}/blogpost/33
 Accept: application/json
 
 

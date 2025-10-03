@@ -22,38 +22,40 @@ namespace backend.services
             _context = dbContext;
         }
 
-        public async Task<IEnumerable<BlogPost>> GetAllPosts()
+        public async Task<ServiceResponse<IEnumerable<BlogPost>>> GetAllPosts()
         {
-            return await _context.BlogPosts.Include(bp => bp.Author).ToListAsync();
+            IEnumerable<BlogPost> blogPosts = await _context.BlogPosts.Include(bp => bp.Author).ToListAsync();
+            return ServiceResponse<IEnumerable<BlogPost>>.Success(blogPosts);
         }
-        public async Task<BlogPost?> GetBlogPost(int id)
+        public async Task<ServiceResponse<BlogPost>> GetBlogPost(int id)
         {
-            return await _context.BlogPosts.Include(bp => bp.Author).FirstOrDefaultAsync(bp => bp.Id == id);
+            BlogPost? bp = await _context.BlogPosts.Include(bp => bp.Author).FirstOrDefaultAsync(bp => bp.Id == id);
+            return bp == null ? ServiceResponse<BlogPost>.NotFound() : ServiceResponse<BlogPost>.Success(bp);
         }
-        public async Task<BlogPost?> CreatePost(BlogPostCreateDto postDto)
+        public async Task<ServiceResponse<BlogPost>> CreatePost(BlogPostCreateDto postDto)
         {
             DateTime utcNow = DateTime.UtcNow;
             BlogPost newPost = new BlogPost { CreatedDateUtc = utcNow, LastUpdatedDateUtc = utcNow };
-            newPost.Patch(postDto);
+            newPost.Patch(postDto); 
             await _context.BlogPosts.AddAsync(newPost);
-            return await _context.SaveChangesAsync() > 0 ? newPost : null;
+            bool bSuccess = await _context.SaveChangesAsync() > 0;
+            return bSuccess ? ServiceResponse<BlogPost>.Success(newPost) : ServiceResponse<BlogPost>.Failed();
         }
-        public async Task<BlogPost?> UpdatePost(int id, BlogPostUpdateDto post)
+        public async Task<ServiceResponse<BlogPost>> UpdatePost(int id, BlogPostUpdateDto post)
         {
             BlogPost? existingPost = await _context.BlogPosts.FindAsync(id);
-            if (existingPost == null) return null;
+            if (existingPost == null) return ServiceResponse<BlogPost>.NotFound();
             existingPost.Patch(post);
-            return await _context.SaveChangesAsync() > 0 ? existingPost : throw new InvalidOperationException("Update Failed");
+            bool bSuccess = await _context.SaveChangesAsync() > 0;
+            return bSuccess ? ServiceResponse<BlogPost>.Success(existingPost) : ServiceResponse<BlogPost>.Failed();
         }
-        public async Task<bool> DeletePost(int id)
+        public async Task<ServiceResponse<BlogPost>> DeletePost(int id)
         {
             BlogPost? bp = _context.BlogPosts.Find(id);
-            if (bp == null)
-            {
-                return false;
-            }
+            if (bp == null) return ServiceResponse<BlogPost>.NotFound();
             _context.BlogPosts.Remove(bp);
-            return await _context.SaveChangesAsync() > 0;
+            bool bSuccess = await _context.SaveChangesAsync() > 0;
+            return bSuccess ? ServiceResponse<BlogPost>.Success() : ServiceResponse<BlogPost>.Failed();
         }
 
 

@@ -41,28 +41,41 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 // BlogPost
-app.MapGet("/blogpost", async (IBlogPostService bs) => await bs.GetAllPosts()).WithName("GetAllBlogPosts");
+app.MapGet("/blogpost", async (IBlogPostService bs) =>
+{
+    ServiceResponse<IEnumerable<BlogPost>> serviceResponse = await bs.GetAllPosts();
+    return serviceResponse.DefaultHttpResponse();
+}).WithName("GetAllBlogPosts");
 app.MapGet("/blogpost/{id}", async (IBlogPostService bs, int id) =>
 {
-    BlogPost? foundBlogPost = await bs.GetBlogPost(id);
-    return foundBlogPost == null ? Results.NotFound($"BlogPost with ID {id} was not found.") : Results.Ok(foundBlogPost);
+    ServiceResponse<BlogPost> serviceResponse = await bs.GetBlogPost(id);
+    return serviceResponse.DefaultHttpResponse();
 }).WithName("GetBlogPost");
 // TODO: Make sure the person sending this request is authenticated as the author of the post object
 app.MapPost("/blogpost", async (IBlogPostService bs, BlogPostCreateDto post) =>
 {
-    BlogPost? createdPost = await bs.CreatePost(post);
     // return the route to get the object as well as the object if success, BadRequest if not
-    return createdPost == null ? Results.BadRequest("Failed to create the BlogPost") : Results.CreatedAtRoute(routeName: "GetBlogPost", routeValues: new { Id = createdPost.Id }, value: createdPost);
+    ServiceResponse<BlogPost> serviceResponse = await bs.CreatePost(post);
+    if (serviceResponse.ServiceResult == ServiceResult.Success)
+    {
+        BlogPost? newPost = serviceResponse.Entity;
+        if (newPost != null)
+        {
+            return Results.CreatedAtRoute(routeName: "GetBlogPost", routeValues: new { Id = newPost.Id });
+        }
+        return Results.InternalServerError("Failed to return BlogPost after creation");
+    }
+    return Results.BadRequest("Failed to create the BlogPost");
 }).WithName("CreateNewBlogPost");
 app.MapPatch("/blogpost/{id}", async (IBlogPostService bs, int id, BlogPostUpdateDto post) =>
 {
-    BlogPost? updatedPost = await bs.UpdatePost(id, post);
-    return updatedPost == null ? Results.NotFound() : Results.NoContent();
+    ServiceResponse<BlogPost> serviceResponse = await bs.UpdatePost(id, post);
+    return serviceResponse.DefaultHttpResponse();
 }).WithName("UpdateBlogPost");
 app.MapDelete("/blogpost/{id}", async (IBlogPostService bs, int id) =>
 {
-    bool bSuccess = await bs.DeletePost(id);
-    return bSuccess ? Results.Accepted() : Results.NotFound();
+    ServiceResponse<BlogPost> serviceResponse = await bs.DeletePost(id);
+    serviceResponse.DefaultHttpResponse();
 }).WithName("DeleteBlogPost");
 
 
