@@ -8,9 +8,10 @@ namespace backend.services
 {
     public interface IAuthorService
     {
-        Task<IEnumerable<Author>> GetAllAuthors();
-        Task<Author?> GetAuthor(int id);
-        Task<bool?> CreateAuthor(AuthorCreateDto author);
-        Task<bool?> DeleteAuthor(int id);
+        Task<ServiceResponse<Author>> GetAllAuthors();
+        Task<ServiceResponse<Author>> GetAuthor(int id);
+        Task<ServiceResponse<Author>> CreateAuthor(AuthorCreateDto author);
+        Task<ServiceResponse<Author>> UpdateAuthor(int id, AuthorUpdateDto author);
+        Task<ServiceResponse<Author>> DeleteAuthor(int id);
     }
 }

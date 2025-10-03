@@ -38,10 +38,46 @@ Accept: application/json
   "authorId": 2
 }
 
-###
+### DELETE a blog post
 
 DELETE {{backend_HostAddress}}/blogpost/1
+Accept: application/json
+
+
+
+
+
+
+
+
+
+### GET all authors
+
+
+GET {{backend_HostAddress}}/author
+Accept: application/json
+
+
+### GET specific author
+
+GET {{backend_HostAddress}}/author/1
+Accept: application/json
+
+### PATCH / UPDATE an author
+
+PATCH {{backend_HostAddress}}/author/1
 Content-Type: application/json
 Accept: application/json
+
+{
+  "Name": "Alisson"
+}
+
+
+### DELETE an author
+
+DELETE {{backend_HostAddress}}/author/1
+Accept: application/json
+
 
 ###

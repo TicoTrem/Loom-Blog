@@ -38,34 +38,54 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// BlogPost
 app.MapGet("/blogpost", async (IBlogPostService bs) => await bs.GetAllPosts()).WithName("GetAllBlogPosts");
-
 app.MapGet("/blogpost/{id}", async (IBlogPostService bs, int id) =>
 {
     BlogPost? foundBlogPost = await bs.GetBlogPost(id);
-    return foundBlogPost == null ? Results.NotFound() : Results.Ok(foundBlogPost);
+    return foundBlogPost == null ? Results.NotFound($"BlogPost with ID {id} was not found.") : Results.Ok(foundBlogPost);
 }).WithName("GetBlogPost");
-
 // TODO: Make sure the person sending this request is authenticated as the author of the post object
 app.MapPost("/blogpost", async (IBlogPostService bs, BlogPostCreateDto post) =>
 {
     BlogPost? createdPost = await bs.CreatePost(post);
     // return the route to get the object as well as the object if success, BadRequest if not
-    return createdPost == null ? Results.BadRequest() : Results.CreatedAtRoute(routeName: "GetBlogPost", routeValues: new { Id = createdPost.Id }, value: createdPost);
-}).WithName("SaveBlogPost");
-
-
+    return createdPost == null ? Results.BadRequest("Failed to create the BlogPost") : Results.CreatedAtRoute(routeName: "GetBlogPost", routeValues: new { Id = createdPost.Id }, value: createdPost);
+}).WithName("CreateNewBlogPost");
 app.MapPatch("/blogpost/{id}", async (IBlogPostService bs, int id, BlogPostUpdateDto post) =>
 {
-    bool bSuccess = await bs.UpdatePost(id, post);
-    return bSuccess ? Results.NoContent() : Results.NotFound();
+    BlogPost? updatedPost = await bs.UpdatePost(id, post);
+    return updatedPost == null ? Results.NotFound() : Results.NoContent();
 }).WithName("UpdateBlogPost");
-
 app.MapDelete("/blogpost/{id}", async (IBlogPostService bs, int id) =>
 {
     bool bSuccess = await bs.DeletePost(id);
     return bSuccess ? Results.Accepted() : Results.NotFound();
 }).WithName("DeleteBlogPost");
+
+
+// Author
+app.MapGet("/author", async (IAuthorService authServ) => await authServ.GetAllAuthors()).WithName("GetAllAuthors");
+app.MapGet("/author/{id}", async (IAuthorService authServ, int id) =>
+{
+    Author? foundAuthor = await authServ.GetAuthor(id);
+    return foundAuthor == null ? Results.NotFound($"Author with ID {id} was not found.") : Results.Ok(foundAuthor);
+}).WithName("GetAuthor");
+app.MapPost("/author", async (IAuthorService authServ, AuthorCreateDto author) =>
+{
+    Author? createdAuthor = await authServ.CreateAuthor(author);
+    return createdAuthor == null ? Results.BadRequest("Failed to create the Author") : Results.Ok(createdAuthor);
+}).WithName("CreateNewAuthor");
+app.MapPatch("/author/{id}", async (IAuthorService authServ, int id, AuthorUpdateDto author) =>
+{
+    Author? updatedAuthor = await authServ.UpdateAuthor(id, author);
+    return updatedAuthor == null ? Results.
+}
+app.MapDelete("/author/{id}", async (IAuthorService authServ, int id) =>
+{
+    bool bAuthorDeleted = await authServ.DeleteAuthor(id);
+    return bAuthorDeleted ? Results.NoContent() : Results.NotFound("The Author with ID {id} was not found and so was not deleted");
+}).WithName("DeleteAuthor");
 
 app.Run();
 
@@ -75,5 +95,8 @@ public record BlogPostUpdateDto(string? Content);
 public record BlogPostCreateDto(string Content, int AuthorId);
 
 public record AuthorCreateDto(string Name);
+public record AuthorUpdateDto(string? Name);
+
+
 
 

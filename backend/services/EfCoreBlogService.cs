@@ -14,6 +14,8 @@ namespace backend.services
 {
     public class EfCoreBlogPostService : IBlogPostService
     {
+
+        private readonly ServiceResults serviceResults = new ServiceResults(); 
         private readonly BlogProjectDbContext _context;
 
         public EfCoreBlogPostService(BlogProjectDbContext dbContext)
@@ -37,13 +39,12 @@ namespace backend.services
             await _context.BlogPosts.AddAsync(newPost);
             return await _context.SaveChangesAsync() > 0 ? newPost : null;
         }
-        public async Task<bool> UpdatePost(int id, BlogPostUpdateDto post)
+        public async Task<BlogPost?> UpdatePost(int id, BlogPostUpdateDto post)
         {
             BlogPost? existingPost = await _context.BlogPosts.FindAsync(id);
-            if (existingPost == null) return false;
+            if (existingPost == null) return null;
             existingPost.Patch(post);
-            await _context.SaveChangesAsync();
-            return true;
+            return await _context.SaveChangesAsync() > 0 ? existingPost : throw new InvalidOperationException("Update Failed");
         }
         public async Task<bool> DeletePost(int id)
         {
