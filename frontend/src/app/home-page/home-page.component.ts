@@ -4,7 +4,7 @@ import { BlogPostListComponent } from '../blog-post-list/blog-post-list.componen
 
 @Component({
   selector: 'app-home-page',
-  imports: [RouterOutlet, BlogPostListComponent],
+  imports: [BlogPostListComponent],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })

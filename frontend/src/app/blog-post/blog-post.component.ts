@@ -22,5 +22,12 @@ export class BlogPostComponent {
       next: data => this.post = data,
       error: err => console.error('Failed to load blog post')
     });
+
+    this.removeContentStyling();
+  }
+
+  removeContentStyling() {
+    const content: HTMLCollectionOf<Element> = document.getElementsByClassName('content');
+    content[0].classList.add('remove-content');
   }
 }

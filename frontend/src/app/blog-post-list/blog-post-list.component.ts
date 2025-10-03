@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { BlogPost, BlogPostService } from '../blog-post.service';
 import { RouterModule } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-blog-post-list',
-  imports: [RouterModule],
+  imports: [RouterModule, DatePipe],
   templateUrl: './blog-post-list.component.html',
   styleUrl: './blog-post-list.component.css'
 })

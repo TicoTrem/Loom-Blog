@@ -1,0 +1,32 @@
+nav > ul {
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+  background-color: whitesmoke;
+  border-bottom: 2px solid grey;
+  padding: 1em;
+  list-style: none;
+  margin: 0;
+}
+
+
+nav > a {
+  padding: 1em;
+  border: 2px solid gray;
+  border-radius: 5em;
+}
+
+.content {
+  box-shadow: 10px 0 10px -10px rgba(0, 0, 0, 0.3), /* right side */
+      -10px 0 10px -10px rgba(0, 0, 0, 0.3);        /* left side */
+  padding: 4em;
+  width: 75%;
+  margin: 0 auto;
+  height: 100%;
+}
+
+.remove-content {
+  box-shadow: none;
+  padding: none;
+  width: 100%;
+}
