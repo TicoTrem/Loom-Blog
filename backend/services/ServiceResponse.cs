@@ -18,17 +18,17 @@ namespace backend.services
         {
             return new ServiceResponse<T> { ServiceResult = ServiceResult.Success, Entity = ent, Message = null };
         }
-        public static ServiceResponse<T> NotFound(string? message)
+        public static ServiceResponse<T> NotFound(string? message = null)
         {
             return new ServiceResponse<T> { ServiceResult = ServiceResult.NotFound, Entity = null, Message = message };
         }
 
-        public static ServiceResponse<T> ValidationFailed(string? message)
+        public static ServiceResponse<T> ValidationFailed(string? message = null)
         {
             return new ServiceResponse<T> { ServiceResult = ServiceResult.ValidationFailed, Entity = null, Message = message };
         }
 
-        public static ServiceResponse<T> Failed(string? message)
+        public static ServiceResponse<T> Failed(string? message = null)
         {
             return new ServiceResponse<T> { ServiceResult = ServiceResult.Failed, Entity = null, Message = message };
         }

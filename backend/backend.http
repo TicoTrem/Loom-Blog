@@ -63,6 +63,16 @@ Accept: application/json
 GET {{backend_HostAddress}}/author/1
 Accept: application/json
 
+### POST / CREATE new author
+
+POST {{backend_HostAddress}}/author
+Content-Type: application/json
+Accept: application/json
+
+{
+  "Name": "Alice"
+}
+
 ### PATCH / UPDATE an author
 
 PATCH {{backend_HostAddress}}/author/1

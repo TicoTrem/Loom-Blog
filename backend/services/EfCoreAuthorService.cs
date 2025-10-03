@@ -18,16 +18,16 @@ namespace backend.services
             _context = context;
         }
 
-        public async Task<ServiceResponse<Author>> GetAllAuthors()
+        public async Task<ServiceResponse<IEnumerable<Author>>> GetAllAuthors()
         {
-            return await _context.Authors.ToListAsync();
+            return ServiceResponse<IEnumerable<Author>>.Success(await _context.Authors.ToListAsync());
         }
 
         public async Task<ServiceResponse<Author>> GetAuthor(int id)
         {
             Author? foundAuthor = await _context.Authors.FindAsync(id);
             if (foundAuthor == null)
-                return ServiceResponse<Author>.NotFound("The author with ID {id} could not be found");
+                return ServiceResponse<Author>.NotFound();
             else
                 return ServiceResponse<Author>.Success(foundAuthor);
         }
@@ -37,16 +37,16 @@ namespace backend.services
             newAuthor.Patch(author);
             await _context.Authors.AddAsync(newAuthor);
             bool bSuccess = await _context.SaveChangesAsync() > 0;
-            return  bSuccess ? ServiceResponse<Author>.Success() : ServiceResponse<Author>.Failed("The Author was not able to be created for unknown reasons");
+            return  bSuccess ? ServiceResponse<Author>.Success(newAuthor) : ServiceResponse<Author>.Failed();
         }
 
         public async Task<ServiceResponse<Author>> UpdateAuthor(int id, AuthorUpdateDto author)
         {
             Author? existingAuthor = await _context.Authors.FindAsync(id);
-            if (existingAuthor == null) return ServiceResponse<Author>.NotFound($"The Author with ID {id} could not be found and was not updated");
+            if (existingAuthor == null) return ServiceResponse<Author>.NotFound();
             existingAuthor.Patch(author);
             bool bSuccess = await _context.SaveChangesAsync() > 0;
-            return bSuccess ? ServiceResponse<Author>.Success(existingAuthor) : ServiceResponse<Author>.Failed("The Author was found, but was not able to be updated");
+            return bSuccess ? ServiceResponse<Author>.Success(existingAuthor) : ServiceResponse<Author>.Failed();
         }
 
         public async Task<ServiceResponse<Author>> DeleteAuthor(int id)
@@ -54,11 +54,11 @@ namespace backend.services
             Author? authorToDelete = await _context.Authors.FindAsync(id);
             if (authorToDelete == null)
             {
-                return ServiceResponse<Author>.NotFound($"The Author with ID {id} could not be found and was not deleted.");
+                return ServiceResponse<Author>.NotFound();
             }
             _context.Authors.Remove(authorToDelete);
             bool bSuccess = await _context.SaveChangesAsync() > 0;
-            return bSuccess ? ServiceResponse<Author>.Success() : ServiceResponse<Author>.Failed("The Author was found, but was not able to be deleted.");
+            return bSuccess ? ServiceResponse<Author>.Success() : ServiceResponse<Author>.Failed();
 
         }
 

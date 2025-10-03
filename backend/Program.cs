@@ -3,6 +3,8 @@ using backend.Data;
 using backend.services;
 using backend.models;
 using MySqlX.XDevAPI.Common;
+using System.Diagnostics;
+using backend.controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -65,26 +67,42 @@ app.MapDelete("/blogpost/{id}", async (IBlogPostService bs, int id) =>
 
 
 // Author
-app.MapGet("/author", async (IAuthorService authServ) => await authServ.GetAllAuthors()).WithName("GetAllAuthors");
+app.MapGet("/author", async (IAuthorService authServ) =>
+{
+    ServiceResponse<IEnumerable<Author>> serviceResponse = await authServ.GetAllAuthors();
+    return serviceResponse.DefaultHttpResponse();
+}).WithName("GetAllAuthors");
 app.MapGet("/author/{id}", async (IAuthorService authServ, int id) =>
 {
-    Author? foundAuthor = await authServ.GetAuthor(id);
-    return foundAuthor == null ? Results.NotFound($"Author with ID {id} was not found.") : Results.Ok(foundAuthor);
+    ServiceResponse<Author> serviceResponse = await authServ.GetAuthor(id);
+    return serviceResponse.DefaultHttpResponse();
 }).WithName("GetAuthor");
+
 app.MapPost("/author", async (IAuthorService authServ, AuthorCreateDto author) =>
 {
-    Author? createdAuthor = await authServ.CreateAuthor(author);
-    return createdAuthor == null ? Results.BadRequest("Failed to create the Author") : Results.Ok(createdAuthor);
+    ServiceResponse<Author> serviceResponse = await authServ.CreateAuthor(author);
+    if (serviceResponse.ServiceResult == ServiceResult.Success)
+    {
+        Author? newAuthor = serviceResponse.Entity;
+        if (newAuthor != null)
+        {
+            return Results.CreatedAtRoute(routeName: "GetAuthor", routeValues: new { Id = newAuthor.Id });
+        }
+        return Results.InternalServerError("Failed to return Author after creation");
+    }
+    return Results.BadRequest("Failed to create the Author");
 }).WithName("CreateNewAuthor");
+
 app.MapPatch("/author/{id}", async (IAuthorService authServ, int id, AuthorUpdateDto author) =>
 {
-    Author? updatedAuthor = await authServ.UpdateAuthor(id, author);
-    return updatedAuthor == null ? Results.
-}
+    ServiceResponse<Author> serviceResponse = await authServ.UpdateAuthor(id, author);
+    return serviceResponse.DefaultHttpResponse();
+}).WithName("UpdateAuthor");
+
 app.MapDelete("/author/{id}", async (IAuthorService authServ, int id) =>
 {
-    bool bAuthorDeleted = await authServ.DeleteAuthor(id);
-    return bAuthorDeleted ? Results.NoContent() : Results.NotFound("The Author with ID {id} was not found and so was not deleted");
+    ServiceResponse<Author> serviceResponse = await authServ.DeleteAuthor(id);
+    serviceResponse.DefaultHttpResponse();
 }).WithName("DeleteAuthor");
 
 app.Run();

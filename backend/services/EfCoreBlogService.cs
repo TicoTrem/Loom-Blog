@@ -15,7 +15,6 @@ namespace backend.services
     public class EfCoreBlogPostService : IBlogPostService
     {
 
-        private readonly ServiceResults serviceResults = new ServiceResults(); 
         private readonly BlogProjectDbContext _context;
 
         public EfCoreBlogPostService(BlogProjectDbContext dbContext)
