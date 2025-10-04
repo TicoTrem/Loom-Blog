@@ -61,6 +61,7 @@ app.MapPost("/blogpost", async (IBlogPostService bs, BlogPostCreateDto post) =>
         BlogPost? newPost = serviceResponse.Entity;
         if (newPost != null)
         {
+            // supplies the route to get the newly created object
             return Results.CreatedAtRoute(routeName: "GetBlogPost", routeValues: new { Id = newPost.Id });
         }
         return Results.InternalServerError("Failed to return BlogPost after creation");
@@ -120,11 +121,11 @@ app.MapDelete("/author/{id}", async (IAuthorService authServ, int id) =>
 
 app.Run();
 
-// also defines what can be updated
-public record BlogPostUpdateDto(string? Content) : IModel;
+// Data Dto's
 // defines which parts of the new blog object can come from the request
 public record BlogPostCreateDto(string Content, int AuthorId) : IModel;
-
+// defines what can be updated
+public record BlogPostUpdateDto(string? Content) : IModel;
 public record AuthorCreateDto(string Name) : IModel;
 public record AuthorUpdateDto(string? Name) : IModel;
 
