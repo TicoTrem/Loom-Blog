@@ -1,20 +1,40 @@
-nav > ul {
-  display: flex;
-  justify-content: center;
-  gap: 2em;
-  background-color: whitesmoke;
-  border-bottom: 2px solid grey;
-  padding: 1em;
-  list-style: none;
-  margin: 0;
+nav {
+    background-color: whitesmoke;
+    border-bottom: 2px solid grey;
+    padding: 0.8em;
+    display: flex;
+    justify-content: space-between;
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .nav-center {
+      align-self: center;
+      a {
+          padding: 0.5em;
+          border: 2px solid gray;
+          border-radius: 5em;
+        }
+      &>ul {
+        display: flex;
+        justify-content: center;
+        gap: 2em;
+      }
+    }
+
+    .nav-right {
+      a.new-post {
+        display: inline-block;
+        background: url("../assets/post.png") no-repeat;
+        height: 32px;
+        width: 32px;
+      }
+    }
 }
 
 
-nav > a {
-  padding: 1em;
-  border: 2px solid gray;
-  border-radius: 5em;
-}
 
 .content {
   box-shadow: 10px 0 10px -10px rgba(0, 0, 0, 0.3), /* right side */
@@ -27,6 +47,6 @@ nav > a {
 
 .remove-content {
   box-shadow: none;
-  padding: none;
+  padding: 0;
   width: 100%;
 }
