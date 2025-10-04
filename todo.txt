@@ -1,6 +1,6 @@
 [X] - Add Author to the asp.net api
 [] - Comment non-basic entity methods and logic
-[] - Convert Author and BlogPost to use ServiceResponse
+[X] - Convert Author and BlogPost to use ServiceResponse
 [] - validate posts when creating a post through the asp.net api
 [] - validate posts on the frontend
 [] - go through api logic to ensure proper responses when different things are given to the endpoint (update with no updatable properties in body)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace backend.models
 {
-    public class BlogPost
+    public class BlogPost : IModel
     {
         public int Id { get; set; }
         public int AuthorId { get; set; }

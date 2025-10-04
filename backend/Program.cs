@@ -121,12 +121,12 @@ app.MapDelete("/author/{id}", async (IAuthorService authServ, int id) =>
 app.Run();
 
 // also defines what can be updated
-public record BlogPostUpdateDto(string? Content);
+public record BlogPostUpdateDto(string? Content) : IModel;
 // defines which parts of the new blog object can come from the request
-public record BlogPostCreateDto(string Content, int AuthorId);
+public record BlogPostCreateDto(string Content, int AuthorId) : IModel;
 
-public record AuthorCreateDto(string Name);
-public record AuthorUpdateDto(string? Name);
+public record AuthorCreateDto(string Name) : IModel;
+public record AuthorUpdateDto(string? Name) : IModel;
 
 
 
