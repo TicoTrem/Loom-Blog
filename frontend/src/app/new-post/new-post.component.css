@@ -1,0 +1,13 @@
+.paper {
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  padding: 4em;
+  width: 50vw;
+  height: 70.71vw;
+  margin: 6em auto 0 auto;
+}
+
+input, input:focus-visible {
+  border: none;
+  outline: none;
+}
