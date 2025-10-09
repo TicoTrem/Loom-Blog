@@ -24,7 +24,16 @@ html, body {
 }
 
 
-
+button {
+  padding: 0.5em;
+  border: 2px solid gray;
+  border-radius: 5em;
+  background-color: white;
+  font-size: large;
+  &:active {
+    background-color: gray;
+  }
+}
 
 
 .paper {

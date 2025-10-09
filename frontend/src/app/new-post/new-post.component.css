@@ -10,3 +10,13 @@ textarea {
   border: none;
   outline: none;
 }
+
+div.btn-container {
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+  margin-top: 2em;
+  & > button {
+    flex: none;
+  }
+}

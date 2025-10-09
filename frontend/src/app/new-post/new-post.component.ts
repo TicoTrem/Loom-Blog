@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import EasyMDE from 'easymde';
 
 @Component({
@@ -11,6 +11,7 @@ import EasyMDE from 'easymde';
 export class NewPostComponent implements OnInit, OnDestroy {
   @ViewChild('editor') editorElement!: ElementRef<HTMLTextAreaElement>;
   private simplemde?: EasyMDE;
+  blogPost: any
 
   ngOnInit() {
     // Wait for view to initialize
@@ -35,6 +36,11 @@ export class NewPostComponent implements OnInit, OnDestroy {
     }, 0);
 
     this.removeContentStyling();
+  }
+
+  onSubmit(form: NgForm) {
+    console.log(form.value);
+    console.log(this.blogPost);
   }
 
   ngOnDestroy() {

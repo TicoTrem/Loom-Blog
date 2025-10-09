@@ -1,5 +1,21 @@
 <!-- TODO: This doesnt work, maybe alter the library styles somehow? -->
+<form #newPostForm="ngForm" (ngSubmit)="onSubmit(newPostForm)">
+
+@if (newPostForm.submitted) {
+  @if (title.valid) {
+  <p>So valid man</p>
+  } @else {
+  <p>So not valid</p>
+  }
+}
+
+
 <div class="paper">
-  <textarea class="title" rows="1" maxlength="30" cols="30" placeholder="Insert Title"></textarea>
-  <textarea  #editor></textarea>
+  <textarea name="title" class="title" ngModel #title="ngModel" [ngModelOptions]="{updateOn: 'submit'}" required  required rows="1" maxlength="30" cols="30" placeholder="Insert Title"></textarea>
+  <textarea name="postContents" #editor required></textarea>
 </div>
+<div class="btn-container">
+  <button>Continue Later</button>
+  <button type="submit">Post</button>
+</div>
+</form>
