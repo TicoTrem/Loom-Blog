@@ -1,5 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
-
+:root {
+  --page-width: 50em;
+  --page-height: 70.71em;
+  --page-font-size: 1em;
+  --page-title-size: 2em;
+}
 
 a {
   color: black;
@@ -9,4 +14,30 @@ a {
 
 html, body {
   margin: 0;
+}
+
+
+/* remove EasyMDE border */
+.EasyMDEContainer > div.CodeMirror {
+  border: none;
+  font-size: var(--page-font-size);
+}
+
+
+
+
+
+.paper {
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  font-size: var(--page-font-size);
+  padding: 4em;
+  width: var(--page-width);
+  height: var(--page-height);
+  margin: 6em auto 0 auto;
+  .title {
+    font-size: var(--page-title-size);
+    display: block;
+    margin: 0 auto;
+  }
 }

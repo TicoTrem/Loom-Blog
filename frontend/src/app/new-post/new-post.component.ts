@@ -14,76 +14,35 @@ export class NewPostComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // Wait for view to initialize
+    // Even a delay of 0 makes it go after the current call stack.
     setTimeout(() => {
       this.simplemde = new EasyMDE({
         autofocus: true,
-        autosave: {
-          enabled: true,
-          uniqueId: "MyUniqueID",
-          delay: 1000,
-          submit_delay: 5000,
-          timeFormat: {
-            locale: 'en-US',
-            format: {
-              year: 'numeric',
-              month: 'long',
-              day: '2-digit',
-              hour: '2-digit',
-              minute: '2-digit',
-            },
-          },
-          text: "Autosaved: "
-        },
         blockStyles: {
-          bold: "__",
-          italic: "_",
+          bold: "**",
+          italic: "*",
         },
         unorderedListStyle: "-",
         element: this.editorElement.nativeElement,
         forceSync: true,
-        hideIcons: ["guide", "heading"],
-        indentWithTabs: false,
-        initialValue: "Hello world!",
-        insertTexts: {
-          horizontalRule: ["", "\n\n-----\n\n"],
-          image: ["![](http://", ")"],
-          link: ["[", "](https://)"],
-          table: ["", "\n\n| Column 1 | Column 2 | Column 3 |\n| -------- | -------- | -------- |\n| Text     | Text      | Text     |\n\n"],
-        },
-        lineWrapping: false,
-        minHeight: "500px",
-        parsingConfig: {
-          allowAtxHeaderWithoutSpace: true,
-          strikethrough: false,
-          underscoresBreakWords: true,
-        },
-        placeholder: "Type here...",
-
-        previewClass: "my-custom-styling",
-
-        promptURLs: true,
-        promptTexts: {
-          image: "Custom prompt for URL:",
-          link: "Custom prompt for URL:",
-        },
-        shortcuts: {
-          drawTable: "Cmd-Alt-T"
-        },
-        showIcons: ["code", "table"],
+        lineWrapping: true,
         spellChecker: false,
-        status: false,
-        styleSelectedText: false,
-        sideBySideFullscreen: false,
         syncSideBySidePreviewScroll: false,
         tabSize: 4,
         toolbar: false,
-        toolbarTips: false,
-        toolbarButtonClassPrefix: "mde"
+        status: false,
       });
     }, 0);
+
+    this.removeContentStyling();
   }
 
   ngOnDestroy() {
     this.simplemde?.toTextArea();
+  }
+
+  removeContentStyling() {
+    const content: HTMLCollectionOf<Element> = document.getElementsByClassName('content');
+    content[0].classList.add('remove-content');
   }
 }

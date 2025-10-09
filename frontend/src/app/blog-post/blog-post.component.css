@@ -2,8 +2,8 @@
   background-color: white;
   box-shadow: 0 0 10px rgba(0,0,0,0.3);
   padding: 4em;
-  width: 50vw;
-  height: 70.71vw;
+  width: var(--page-width);
+  height: var(--page-height);
   margin: 6em auto 0 auto;
 }
 
