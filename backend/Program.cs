@@ -123,9 +123,9 @@ app.Run();
 
 // Data Dto's
 // defines which parts of the new blog object can come from the request
-public record BlogPostCreateDto(string Content, int AuthorId) : IModel;
+public record BlogPostCreateDto(string Title, string Content, int AuthorId) : IModel;
 // defines what can be updated
-public record BlogPostUpdateDto(string? Content) : IModel;
+public record BlogPostUpdateDto(string? Title, string? Content) : IModel;
 public record AuthorCreateDto(string Name) : IModel;
 public record AuthorUpdateDto(string? Name) : IModel;
 

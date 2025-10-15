@@ -11,6 +11,7 @@ namespace backend.models
         public int Id { get; set; }
         public int AuthorId { get; set; }
         public Author Author { get; set; } = null!;
+        public string Title { get; set; } = "";
         public string Content { get; set; } = "";
 
         public DateTime? CreatedDateUtc { get; set; }

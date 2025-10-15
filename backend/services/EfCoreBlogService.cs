@@ -34,6 +34,8 @@ namespace backend.services
         }
         public async Task<ServiceResponse<BlogPost>> CreatePost(BlogPostCreateDto postDto)
         {
+            Console.WriteLine("Incoming content!");
+            Console.WriteLine($"Title: {postDto.Title}\nContent: {postDto.Content}\nAuthorID: {postDto.AuthorId}");
             DateTime utcNow = DateTime.UtcNow;
             BlogPost newPost = new BlogPost { CreatedDateUtc = utcNow, LastUpdatedDateUtc = utcNow };
             newPost.Patch(postDto); 

@@ -3,13 +3,21 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 export interface BlogPost {
-  id: number
+  id: number;
+  title: string;
   content: string;
   author: Author;
-  createdDateUtc: string
+  createdDateUtc: string;
+  lastUpdatedDateUtc: string;
+}
+
+export interface CreateBlogPost {
+  title: string;
+  content: string;
+  authorId: number;
 }
 export interface Author {
-  id: number
+  id: number;
   name: string;
 }
 
@@ -28,6 +36,10 @@ export class BlogPostService {
 
   getAll(): Observable<BlogPost[]> {
     return this.http.get<BlogPost[]>(this.apiUrl)
+  }
+
+  create(post: CreateBlogPost): Observable<BlogPost> {
+    return this.http.post<BlogPost>(this.apiUrl, post)
   }
   constructor() { }
 }

@@ -12,7 +12,7 @@
 
 <div class="paper">
   <textarea name="title" class="title" ngModel #title="ngModel" [ngModelOptions]="{updateOn: 'submit'}" required  required rows="1" maxlength="30" cols="30" placeholder="Insert Title"></textarea>
-  <textarea name="postContents" #editor required></textarea>
+<app-easymde-editor name="content" ngModel></app-easymde-editor>
 </div>
 <div class="btn-container">
   <button>Continue Later</button>
