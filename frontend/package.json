@@ -19,6 +19,7 @@
     "@angular/platform-browser-dynamic": "^20.3.2",
     "@angular/router": "^20.3.2",
     "easymde": "^2.20.0",
+    "marked": "^16.4.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.1"

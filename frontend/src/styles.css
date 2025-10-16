@@ -35,6 +35,10 @@ button {
   }
 }
 
+/* These fields don't inherit this by default */
+input, textarea, select, button {
+  font-family: inherit;
+}
 
 .paper {
   background-color: white;
@@ -44,9 +48,11 @@ button {
   width: var(--page-width);
   height: var(--page-height);
   margin: 6em auto 0 auto;
+  font-family: Georgia, 'Times New Roman', Times, serif !important;
   .title {
     font-size: var(--page-title-size);
     display: block;
     margin: 0 auto;
+    text-align: center;
   }
 }
