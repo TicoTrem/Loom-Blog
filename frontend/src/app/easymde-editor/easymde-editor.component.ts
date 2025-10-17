@@ -1,6 +1,8 @@
 import { Component, ElementRef, forwardRef, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import EasyMDE from 'easymde';
+import CodeMirror from 'codemirror';
+import './custom-markdown-mode.js';
 
 @Component({
   selector: 'app-easymde-editor',
@@ -28,22 +30,32 @@ export class EasyMdeEditorComponent implements ControlValueAccessor {
   }
 
   ngAfterViewInit() {
-      this.easyMde = new EasyMDE({
-        autofocus: true,
-        blockStyles: {
-          bold: "**",
-          italic: "*",
-        },
-        unorderedListStyle: "-",
-        element: this.easyMdeTextArea.nativeElement,
-        forceSync: true,
-        lineWrapping: true,
-        spellChecker: false,
-        syncSideBySidePreviewScroll: false,
-        tabSize: 4,
-        toolbar: false,
-        status: false,
-      });
+    console.log("ngAfterViewInit");
+
+    this.easyMde = new EasyMDE({
+      autofocus: true,
+      blockStyles: {
+        bold: "**",
+        italic: "*",
+      },
+      unorderedListStyle: "-",
+      element: this.easyMdeTextArea.nativeElement,
+      forceSync: true,
+      lineWrapping: true,
+      spellChecker: false,
+      syncSideBySidePreviewScroll: false,
+      tabSize: 4,
+      toolbar: false,
+      status: false,
+    });
+
+
+
+    // TODO: Experiment with changing mode and using the on change event to change header class
+    this.easyMde.codemirror.setOption("mode", "custom-markdown");
+
+
+
 
     // create a local variable to ensure its not null by the
     // time its called by the change event
@@ -51,6 +63,23 @@ export class EasyMdeEditorComponent implements ControlValueAccessor {
     if (copyOfEasyMde != null) {
       // connect the easymde onchange to the angular onChange method
       copyOfEasyMde.codemirror.on('change', () => {
+        // TODO: Take this out of the on change directly and find a better place for it if I am keeping it
+        const cm = copyOfEasyMde.codemirror;
+        cm.eachLine(line => {
+          const text = cm.getLine(cm.getLineNumber(line)!);
+          const match = text.match(/^(#{1,6})\s/);
+          if (match) {
+            const level = match[1].length;
+            for (let i = 1; i <= 6; i++) {
+              cm.removeLineClass(line, "wrap", `markdown-header-${i}`);
+            }
+            cm.addLineClass(line, "wrap", `markdown-header-${level}`);
+
+
+          }
+        });
+
+
         this.onChange(copyOfEasyMde.value())
       })
     }

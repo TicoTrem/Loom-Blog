@@ -20,3 +20,8 @@ div.btn-container {
     flex: none;
   }
 }
+
+
+.cm-header-1 {
+  font-size: 2em;
+}

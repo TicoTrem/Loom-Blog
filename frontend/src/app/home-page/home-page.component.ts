@@ -9,5 +9,4 @@ import { BlogPostListComponent } from '../blog-post-list/blog-post-list.componen
   styleUrl: './home-page.component.css'
 })
 export class HomePageComponent {
-
 }

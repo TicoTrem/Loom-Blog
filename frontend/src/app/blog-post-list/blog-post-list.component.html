@@ -1,6 +1,6 @@
 
 <ul>
   @for(post of posts; track post.id) {
-    <li><a routerLink="/blogpost/{{post.id}}">Author: {{ post.author.name}}</a> Date created: {{post.createdDateUtc | date:'longDate'}}</li>
+    <li><a routerLink="/blogpost/{{post.id}}">Title: {{post.title}}</a> Author: {{ post.author.name}} Date created: {{post.createdDateUtc | date:'longDate'}}</li>
   }
 </ul>

@@ -12,10 +12,11 @@ import { EasyMdeEditorComponent } from '../easymde-editor/easymde-editor.compone
 })
 export class NewPostComponent implements OnInit, OnDestroy {
   @ViewChild('editor') editorElement!: ElementRef<HTMLTextAreaElement>;
-  private easymde?: EasyMDE;
   blogPost: any
 
   constructor(private blogPostService: BlogPostService){}
+  ngOnDestroy(): void {
+  }
 
   ngOnInit() {
     this.removeContentStyling();
@@ -28,11 +29,6 @@ export class NewPostComponent implements OnInit, OnDestroy {
     });
 
     console.log(form.value);
-  }
-
-  ngOnDestroy() {
-    this.easymde
-    this.easymde?.toTextArea();
   }
 
   removeContentStyling() {

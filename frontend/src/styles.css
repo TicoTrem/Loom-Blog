@@ -56,3 +56,36 @@ input, textarea, select, button {
     text-align: center;
   }
 }
+
+
+.CodeMirror-code >.markdown-header-1 {
+  font-size: 2em !important;
+}
+.CodeMirror-code >.markdown-header-2 {
+  font-size: 1.5em !important;
+}
+.CodeMirror-code>.markdown-header-3 {
+  font-size: 1.17em;
+}
+.CodeMirror-code >.markdown-header-4 {
+  font-size: 1em;
+}
+.CodeMirror-code > .markdown-header-5 {
+  font-size: 0.83em;
+}
+.CodeMirror-code > .markdown-header-6 {
+  font-size: 0.67em;
+}
+
+
+.CodeMirror-line {
+  & .cm-header-1,
+  & .cm-header-2,
+  & .cm-header-3,
+  & .cm-header-4,
+  & .cm-header-5,
+  & .cm-header-6 {
+    font-size: inherit;
+  }
+}
+
