@@ -68,8 +68,8 @@ export class EasyMdeEditorComponent implements ControlValueAccessor {
     }
   }
 
+  // Custom header sizing logic. Original EasyMDE made headers much larger than in preview
   adjustHeaderClass(copyOfEasyMde: EasyMDE) {
-    // // TODO: Take this out of the on change directly and find a better place for it if I am keeping it
     const cm = copyOfEasyMde.codemirror;
     cm.eachLine(line => {
       const text = cm.getLine(cm.getLineNumber(line)!);

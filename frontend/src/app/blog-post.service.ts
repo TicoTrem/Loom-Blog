@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Author } from './author.service';
 
 export interface BlogPost {
   id: number;
@@ -15,10 +16,6 @@ export interface CreateBlogPost {
   title: string;
   content: string;
   authorId: number;
-}
-export interface Author {
-  id: number;
-  name: string;
 }
 
 @Injectable({

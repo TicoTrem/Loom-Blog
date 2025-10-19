@@ -1,8 +1,9 @@
 [X] - Add Author to the asp.net api
 [X] - Comment non-basic entity methods and logic
 [X] - Convert Author and BlogPost to use ServiceResponse
-[] - Add create blog post UI to frontend (Consider having separate NewPostPage and NewPostComponent, and having the component
+[X] - Add create blog post UI to frontend (Consider having separate NewPostPage and NewPostComponent, and having the component
  in the page (page has overall page structure, component can then be used in things like modals))
+[] - Create log in page
 [] - Add create Author UI to frontend
 [] - validate posts when creating a post through the asp.net api
 [] - validate posts on the frontend
