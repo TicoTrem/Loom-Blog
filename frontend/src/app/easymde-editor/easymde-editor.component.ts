@@ -30,7 +30,6 @@ export class EasyMdeEditorComponent implements ControlValueAccessor {
   }
 
   ngAfterViewInit() {
-    console.log("ngAfterViewInit");
 
     this.easyMde = new EasyMDE({
       autofocus: true,
@@ -52,7 +51,7 @@ export class EasyMdeEditorComponent implements ControlValueAccessor {
 
 
     // TODO: Experiment with changing mode and using the on change event to change header class
-    this.easyMde.codemirror.setOption("mode", "custom-markdown");
+    // this.easyMde.codemirror.setOption("mode", "custom-markdown");
 
 
 
@@ -63,25 +62,31 @@ export class EasyMdeEditorComponent implements ControlValueAccessor {
     if (copyOfEasyMde != null) {
       // connect the easymde onchange to the angular onChange method
       copyOfEasyMde.codemirror.on('change', () => {
-        // TODO: Take this out of the on change directly and find a better place for it if I am keeping it
-        const cm = copyOfEasyMde.codemirror;
-        cm.eachLine(line => {
-          const text = cm.getLine(cm.getLineNumber(line)!);
-          const match = text.match(/^(#{1,6})\s/);
-          if (match) {
-            const level = match[1].length;
-            for (let i = 1; i <= 6; i++) {
-              cm.removeLineClass(line, "wrap", `markdown-header-${i}`);
-            }
-            cm.addLineClass(line, "wrap", `markdown-header-${level}`);
-
-
-          }
-        });
-
-
+        this.adjustHeaderClass(copyOfEasyMde);
         this.onChange(copyOfEasyMde.value())
       })
+    }
+  }
+
+  adjustHeaderClass(copyOfEasyMde: EasyMDE) {
+    // // TODO: Take this out of the on change directly and find a better place for it if I am keeping it
+    const cm = copyOfEasyMde.codemirror;
+    cm.eachLine(line => {
+      const text = cm.getLine(cm.getLineNumber(line)!);
+      const match = text.match(/^(#{1,6})(?!\S)/);
+      if (match) {
+        const level = match[1].length;
+        removeClass(line);
+        cm.addLineClass(line, "wrap", `markdown-header-${level}`);
+      } else {
+        removeClass(line);
+      }
+    });
+
+    let removeClass = (line: CodeMirror.LineHandle) => {
+      for (let i = 1; i <= 6; i++) {
+        cm.removeLineClass(line, "wrap", `markdown-header-${i}`);
+      }
     }
   }
 
