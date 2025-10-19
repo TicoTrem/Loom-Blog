@@ -71,6 +71,11 @@ export class EasyMdeEditorComponent implements ControlValueAccessor {
   // Custom header sizing logic. Original EasyMDE made headers much larger than in preview
   adjustHeaderClass(copyOfEasyMde: EasyMDE) {
     const cm = copyOfEasyMde.codemirror;
+    let removeClass = (line: CodeMirror.LineHandle) => {
+      for (let i = 1; i <= 6; i++) {
+        cm.removeLineClass(line, "wrap", `markdown-header-${i}`);
+      }
+    }
     cm.eachLine(line => {
       const text = cm.getLine(cm.getLineNumber(line)!);
       const match = text.match(/^(#{1,6})(?!\S)/);
@@ -83,11 +88,7 @@ export class EasyMdeEditorComponent implements ControlValueAccessor {
       }
     });
 
-    let removeClass = (line: CodeMirror.LineHandle) => {
-      for (let i = 1; i <= 6; i++) {
-        cm.removeLineClass(line, "wrap", `markdown-header-${i}`);
-      }
-    }
+
   }
 
   writeValue(value: string): void {

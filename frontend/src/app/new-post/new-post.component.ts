@@ -3,6 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import EasyMDE from 'easymde';
 import { BlogPost, BlogPostService, CreateBlogPost } from '../blog-post.service';
 import { EasyMdeEditorComponent } from '../easymde-editor/easymde-editor.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-new-post',
@@ -14,7 +15,7 @@ export class NewPostComponent implements OnInit, OnDestroy {
   @ViewChild('editor') editorElement!: ElementRef<HTMLTextAreaElement>;
   blogPost: any
 
-  constructor(private blogPostService: BlogPostService){}
+  constructor(private blogPostService: BlogPostService, private cookieService: CookieService){}
   ngOnDestroy(): void {
   }
 
@@ -23,7 +24,7 @@ export class NewPostComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(form: NgForm) {
-    let post: CreateBlogPost = {content: form.value.content, title: form.value.title, authorId: 2}
+    let post: CreateBlogPost = {content: form.value.content, title: form.value.title, authorId: Number(this.cookieService.get('author'))}
     this.blogPostService.create(post).subscribe(response => {
       console.log('Got data: ', response);
     });

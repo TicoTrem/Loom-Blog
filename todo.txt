@@ -3,7 +3,7 @@
 [X] - Convert Author and BlogPost to use ServiceResponse
 [X] - Add create blog post UI to frontend (Consider having separate NewPostPage and NewPostComponent, and having the component
  in the page (page has overall page structure, component can then be used in things like modals))
-[] - Create log in page
+[] - Create way to switch users (temporary until we get login working. Try get it to use proper sessions though)
 [] - Add create Author UI to frontend
 [] - validate posts when creating a post through the asp.net api
 [] - validate posts on the frontend
