@@ -3,9 +3,16 @@
 [X] - Convert Author and BlogPost to use ServiceResponse
 [X] - Add create blog post UI to frontend (Consider having separate NewPostPage and NewPostComponent, and having the component
  in the page (page has overall page structure, component can then be used in things like modals))
+[] - Design a nicer home page
 [] - Create way to switch users (temporary until we get login working. Try get it to use proper sessions though)
 [] - Add create Author UI to frontend
 [] - validate posts when creating a post through the asp.net api
 [] - validate posts on the frontend
 [] - go through api logic to ensure proper responses when different things are given to the endpoint (update with no updatable properties in body)
+
+
+
+
+Maybe I should practice creating an abstraction for the authentication stuff so that the implementation of authenticating the user doesn't matter to the thing that needs it 
+(Just takes a bool). Because then I can just code the real authentication as I go and it will be a simple swap. Decoupling woooooo!
 
