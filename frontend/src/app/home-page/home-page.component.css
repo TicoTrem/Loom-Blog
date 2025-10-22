@@ -1,10 +1,10 @@
 .banner {
 /*  background-image: url(""); */
     width: 100vw;
-  height: 30vw;
-  background-image: url("../../assets/banner-background.png");
+  height: 30vh;
+  background-color: #e2e2e2;
   & > div {
-    height: 90%;
+    height: 85%;
     display: flex;
     .first-half {
       width: 50%;
@@ -24,7 +24,7 @@
   }
 
   .second-half {
-    height: 100%;
+    height: 110%;
     width: 50%;
     background-image: url("../../assets/loom-banner.png");
     background-repeat: no-repeat;
@@ -34,7 +34,61 @@
 }
  img {
     width: clamp(20px, 8vw, 150px);
-    margin: 0 0 2vw 2vw;
+    margin: 0 0 20vw 2vw;
   }
+}
+
+.PostDemoSection {
+  height: 30vh;
+}
+
+.markdown {
+  font-size: 1.3rem;
+  background-color: #e2e2e2;
+  border: 1px solid #333333;
+  text-align: center;
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
+
+
+  .mdSplit {
+    display: flex;
+    align-items: stretch;
+    div {
+      flex: 1;
+      border-radius: 7px;
+      border: 2px solid #333333;
+      padding: 1rem;
+      margin: 1rem;
+      margin-bottom: 2em;
+    }
+    div:nth-child(2) {
+      text-align: left;
+    }
+    .arrow-down {
+      padding: 0;
+      border-radius: 0;
+      position: relative;
+      width: 4px;
+      height: 15px;
+      background: black;
+      margin: 1em;
+      margin-left: 2.5em;
+    }
+    .arrow-down::after {
+      content: "";
+      border-radius: 0;
+      position: absolute;
+      left: 50%;
+      bottom: -6px;
+      transform: translateX(-50%);
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 8px solid black;
+    }
+  }
+}
 
