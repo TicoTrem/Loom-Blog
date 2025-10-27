@@ -2,8 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using backend.Data;
 using backend.services;
 using backend.models;
-using MySqlX.XDevAPI.Common;
-using System.Diagnostics;
 using backend.controllers;
 
 var builder = WebApplication.CreateBuilder(args);
