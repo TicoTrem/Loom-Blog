@@ -24,7 +24,7 @@ export interface CreateBlogPost {
 export class BlogPostService {
 
   private http = inject(HttpClient)
-  private apiUrl = 'http://localhost:5192/blogpost'
+  private apiUrl = 'http://localhost:5192/api/blogpost'
 
 
   get(id: number): Observable<BlogPost> {

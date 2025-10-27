@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using backend.services;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace backend.controllers
 {
-    
+
     public static class HttpResponseMapper
     {
         /// <summary>
@@ -17,16 +19,16 @@ namespace backend.controllers
         /// <typeparam name="T"></typeparam>
         /// <param name="serviceResponse"></param>
         /// <returns></returns>
-        public static IResult DefaultHttpResponse<T>(this ServiceResponse<T> serviceResponse)
+        public static IActionResult DefaultHttpResponse<T>(this ServiceResponse<T> serviceResponse)
         where T : class
         {
             return serviceResponse.ServiceResult switch
             {
-                ServiceResult.Success => serviceResponse.Entity == null ? Results.NoContent() : Results.Ok(serviceResponse.Entity),
-                ServiceResult.NotFound => Results.NotFound("No entity with the given ID was found. No action taken"),
-                ServiceResult.ValidationFailed => Results.BadRequest("The validation has failed. No action taken"),
-                ServiceResult.Failed => Results.InternalServerError(),
-                _ => Results.InternalServerError("Unknown error")
+                ServiceResult.Success => serviceResponse.Entity == null ? new NoContentResult() : new OkObjectResult(serviceResponse.Entity),
+                ServiceResult.NotFound => new NotFoundObjectResult("No entity with the given ID was found. No action taken"),
+                ServiceResult.ValidationFailed => new BadRequestObjectResult("The validation has failed. No action taken"),
+                ServiceResult.Failed => new StatusCodeResult(500),
+                _ => new ObjectResult("Unknown error") { StatusCode = 500 }
             };
         }
     }

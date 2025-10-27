@@ -16,7 +16,7 @@ export interface CreateAuthor {
 })
 export class AuthorService {
   private http = inject(HttpClient)
-  private apiUrl = 'http://localhost:5192/Author'
+  private apiUrl = 'http://localhost:5192/api/Author'
 
   get(id: number): Observable<Author> {
     return this.http.get<Author>(this.apiUrl + `/${id}`)
